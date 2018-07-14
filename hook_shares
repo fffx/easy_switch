@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 #!/bin/bash -xv
 
+# Skip hook
+[ -n "$SKIP" ] && exit 0
+
 # fonts
 BOLD='\033[1m'
 NONE='\033[00m'

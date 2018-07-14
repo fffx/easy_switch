@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-#!/bin/bash -xv
-
-[ -n "$SKIP" ] && exit 0
 
 source "$PWD/.git/hooks/hook_shares"
 
