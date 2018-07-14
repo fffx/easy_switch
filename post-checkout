@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+#!/bin/bash -xv
+
+[ -n "$SKIP" ] && exit 0
+
+source "$PWD/.git/hooks/hook_shares"
+
+branch=$(git symbolic-ref --short HEAD)
+prefix_branches=(testing hotfix release)
+target_branch=master
+
+
+for br in "${prefix_branches[@]}"
+do
+  #echo "$br -----$branch -------- $br"
+  if [[ $branch =~ ^$br ]]; then
+    if [[ $branch =~ ^hotfix|release ]]; then
+      target_branch="release"
+    else
+     target_branch=$br
+    fi
+  fi
+done
+
+# Check out each repo to corresponding branch
+for repo_dir in "${repo_paths[@]}"
+do
+  repo=$(echo $repo_dir | grep -Po "[a-zA-Z_\-0-9]+")
+  repo_hint="${BOLD}${PURPLE}$repo:${NONE}"
+  if [[ -d $repo_dir ]]
+  then
+    cd $repo_dir
+    #current_branch=$(git rev-parse --abbrev-ref HEAD)
+    if [[ `git branch --list $branch ` ]]
+    then
+      to_branch=$branch
+    else
+      to_branch=$target_branch
+    fi
+    if git checkout $to_branch > /dev/null 2>&1
+    then
+      echo -e "$repo_hint => $to_branch"
+    else
+      echo -e "$repo_hint FAIL, repo not clean" 1>&2
+    fi
+  fi
+done
+# https://unix.stackexchange.com/questions/37260/change-font-in-echo-command
+tput sgr0

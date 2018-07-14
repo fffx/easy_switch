@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+#!/bin/bash -xv
+source "$PWD/.git/hooks/hook_shares"
+
+#echo 'post merge'
+for repo_dir in "${repo_paths[@]}"
+do
+  repo=$(echo $repo_dir | grep -Po "[a-zA-Z_\-0-9]+")
+  repo_hint="${BOLD}${PURPLE}$repo:${NONE}"
+  cd $repo_dir
+  if [[ -z $(git status -uno --porcelain) ]]; then
+    echo -e "$repo_hint updating .."
+    nohup git pull > /dev/null 2>&1 &
+  else
+    echo -e "$repo_hint not clean, skipped .."
+  fi
+done
