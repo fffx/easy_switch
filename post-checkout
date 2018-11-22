@@ -4,7 +4,7 @@ source "$PWD/.git/hooks/hook_shares"
 
 branch=$(git symbolic-ref --short HEAD)
 prefix_branches=(testing hotfix release)
-target_branch=master
+target_branch=release
 
 
 for br in "${prefix_branches[@]}"
