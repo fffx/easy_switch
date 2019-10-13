@@ -10,7 +10,7 @@ NONE='\033[00m'
 PURPLE='\033[01;35m'
 
 project_dir=$(git rev-parse --show-toplevel)
-repo_paths=($(cat Gemfile | grep -Po "^gem.*path\s*[:=>]+\s+['\"].*['\"]" | grep -Po "['\"][a-zA-Z0-9_./]+['\"]$" | grep -Po "[a-zA-Z0-9_./]+" | uniq))
+repo_paths=($(cat Gemfile | grep -Po "^\s*gem.*path\s*[:=>]+\s+['\"]\K([^\"']+)" | uniq))
 
 # left_branch=$(git rev-parse --abbrev-ref HEAD)
 ## check if previous commend success
