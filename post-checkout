@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+#!/bin/bash -xv
 source "$PWD/.git/hooks/hook_shares"
 
 branch=$(git symbolic-ref --short HEAD)
@@ -28,8 +28,8 @@ do
   then
     cd $repo_dir
     #current_branch=$(git rev-parse --abbrev-ref HEAD)
-    if [[ `git branch --list $branch ` ]]
-    then
+    #if [[ `git branch --list $branch ` ]]; then
+    if [[ `git show-ref $branch` ]]; then
       to_branch=$branch
     else
       to_branch=$target_branch

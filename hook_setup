@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
+#!/bin/bash -xv
+project_path=$1
 if [ -z ${1+x} ] || [ -z "$1" ]; then
-  >&2 echo 'Please specify a project path'
-  exit 0
-elif [ ! -d $1 ]; then
-  >&2 echo "$1 is not exists or is not directory"
+  echo 'Please specify a project path'
   exit 0
 elif [ ! -d $1/.git ]; then
   >&2 echo "$1 is not a git repository"
   exit 0
 fi
 files=(hook_shares post-checkout post-merge)
-for hook in "${files[@]}"; do
+for hook in "${files[@]}"
+do
   chmod +x $PWD/${hook}
-  ln -sf $PWD/${hook} $1/.git/hooks/$hook
+  ln -sf $PWD/${hook} $project_path/.git/hooks/$hook
 done
 
 echo "Done ..."
